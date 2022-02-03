@@ -77,147 +77,65 @@ class Books
      *
      * @ORM\Column(name="client_id", type="integer", nullable=true)
      */
-    private $clientid;
-
-
+    private $clientId;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Clients::class, inversedBy="books")
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Clients", inversedBy="books")
+     * @ORM\JoinTable(name="books_clients",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="books_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="clients_id", referencedColumnName="id")
+     *   }
+     * )
      */
-    private $Clients;
+    private $clients;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Borrow::class, mappedBy="Books")
+     */
+    private $borrows;
+
+    /**
+     * Constructor
+     */
     public function __construct()
     {
-        $this->Clients = new ArrayCollection();
+        $this->clients = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->borrows = new ArrayCollection();
     }
-
-    
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?string
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(string $author): self
-    {
-        $this->author = $author;
-
-        return $this;
-    }
-
-    public function getSummary(): ?string
-    {
-        return $this->summary;
-    }
-
-    public function setSummary(string $summary): self
-    {
-        $this->summary = $summary;
-
-        return $this;
-    }
-
-    public function getReleaseDate(): ?\DateTimeInterface
-    {
-        return $this->releaseDate;
-    }
-
-    public function setReleaseDate(\DateTimeInterface $releaseDate): self
-    {
-        $this->releaseDate = $releaseDate;
-
-        return $this;
-    }
-
-    public function getCategory(): ?string
-    {
-        return $this->category;
-    }
-
-    public function setCategory(string $category): self
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    public function getForChild(): ?bool
-    {
-        return $this->forChild;
-    }
-
-    public function setForChild(bool $forChild): self
-    {
-        $this->forChild = $forChild;
-
-        return $this;
-    }
-
-    public function getAivalable(): ?bool
-    {
-        return $this->aivalable;
-    }
-
-    public function setAivalable(?bool $aivalable): self
-    {
-        $this->aivalable = $aivalable;
-
-        return $this;
-    }
-
-    
-
-    public function toArray()
-    {
-           return [
-                   'title' => $this->getTitle(),
-                   'author' => $this->getAuthor(),
-                   'summary' => $this->getSummary(),
-                   'release_date' => $this->getReleaseDate(),
-                   'category' => $this->getCategory(),
-                   'for_child' => $this->getForChild(),
-                   'avalable' => $this->getAivalable(),
-                   'client_id' => $this->getClientId()
-]; }
 
     /**
-     * @return Collection|Clients[]
+     * @return Collection|Borrow[]
      */
-    public function getClients(): Collection
+    public function getBorrows(): Collection
     {
-        return $this->Clients;
+        return $this->borrows;
     }
 
-    public function addClient(Clients $client): self
+    public function addBorrow(Borrow $borrow): self
     {
-        if (!$this->Clients->contains($client)) {
-            $this->Clients[] = $client;
+        if (!$this->borrows->contains($borrow)) {
+            $this->borrows[] = $borrow;
+            $borrow->setBooks($this);
         }
 
         return $this;
     }
 
-    public function removeClient(Clients $client): self
+    public function removeBorrow(Borrow $borrow): self
     {
-        $this->Clients->removeElement($client);
+        if ($this->borrows->removeElement($borrow)) {
+            // set the owning side to null (unless already changed)
+            if ($borrow->getBooks() === $this) {
+                $borrow->setBooks(null);
+            }
+        }
 
         return $this;
     }
+
 }

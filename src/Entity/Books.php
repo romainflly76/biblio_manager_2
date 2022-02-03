@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -75,7 +77,21 @@ class Books
      *
      * @ORM\Column(name="client_id", type="integer", nullable=true)
      */
-    private $clientId;
+    private $clientid;
+
+
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Clients::class, inversedBy="books")
+     */
+    private $Clients;
+
+    public function __construct()
+    {
+        $this->Clients = new ArrayCollection();
+    }
+
+    
 
     public function getId(): ?int
     {
@@ -166,17 +182,7 @@ class Books
         return $this;
     }
 
-    public function getClientId(): ?int
-    {
-        return $this->clientId;
-    }
-
-    public function setClientId(?int $clientId): self
-    {
-        $this->clientId = $clientId;
-
-        return $this;
-    }
+    
 
     public function toArray()
     {
@@ -190,4 +196,28 @@ class Books
                    'avalable' => $this->getAivalable(),
                    'client_id' => $this->getClientId()
 ]; }
+
+    /**
+     * @return Collection|Clients[]
+     */
+    public function getClients(): Collection
+    {
+        return $this->Clients;
+    }
+
+    public function addClient(Clients $client): self
+    {
+        if (!$this->Clients->contains($client)) {
+            $this->Clients[] = $client;
+        }
+
+        return $this;
+    }
+
+    public function removeClient(Clients $client): self
+    {
+        $this->Clients->removeElement($client);
+
+        return $this;
+    }
 }

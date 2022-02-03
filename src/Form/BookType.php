@@ -16,10 +16,10 @@ class BookType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', TextType::class, ['label' => 'Nom de la tâche', 'attr' => ['class' => 'form-control mb-3']])
-            ->add('author', TextType::class, ['label' => 'Nom de la tâche', 'attr' => ['class' => 'form-control mb-3']])
-            ->add('summary', TextType::class, ['label' => 'Nom de la tâche', 'attr' => ['class' => 'form-control mb-3']])
-            ->add('releaseDate', DateType::class, ["widget"=>"single_text",'label' => 'Date de la tâche','attr' => ['class' => 'form-control mb-3']])
+            ->add('title', TextType::class, ['label' => 'Nom du livre', 'attr' => ['class' => 'form-control mb-3']])
+            ->add('author', TextType::class, ['label' => 'Nom de l\'auteur', 'attr' => ['class' => 'form-control mb-3']])
+            ->add('summary', TextType::class, ['label' => 'description', 'attr' => ['class' => 'form-control mb-3']])
+            ->add('releaseDate', DateType::class, ["widget"=>"single_text",'label' => 'Date de parution','attr' => ['class' => 'form-control mb-3']])
             ->add('category')
             ->add('forChild')
             ->add('aivalable')

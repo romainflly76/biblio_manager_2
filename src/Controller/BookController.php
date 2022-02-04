@@ -3,26 +3,33 @@
 namespace App\Controller;
 
 use App\Entity\Books;
+use App\Entity\Borrow;
 use App\Form\BookType;
+use App\Entity\Clients;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class BookController extends AbstractController
 {
+    
     #[Route('/book', name: 'book')]
-    public function index(): Response
+    public function index(ManagerRegistry $doctrine): Response
     {
-        return $this->render('book/index.html.twig', [
+         return $this->render('book/index.html.twig', [
             'controller_name' => 'BookController',
         ]);
     }
-
+        
+    
+       
+        
     #[Route('/book/listing', name: 'book_listing')]
     public function listing(EntityManagerInterface $entity): Response
 
@@ -145,6 +152,70 @@ class BookController extends AbstractController
            return $this->redirectToRoute('book_listing');
           
     }
+    /**
+     * @Route("/book/borrow/{id}")
+     */
+    public function borrow(Request $request, ManagerRegistry $doctrine, int $id): Response
+    {
+        $entityManager = $doctrine->getManager();
+                                                                    // l'id vient de l'url
+        $book = $entityManager->getRepository(Books::class)->findOneBy(['id'=>$id]);
+        // nouvel emprunt on defini une date et une date max
+        $borrow = new Borrow;
+            $borrow->setDateLoan(new \DateTime('now'));
+            $borrow->setDateRendredMax(new \DateTime('+15 days'));
+            // on lie ce livre trouvé dans la base de donnée qu'on lie à l'emprunt
+            $borrow->setBooks($book);
+        
+        // on doit faire un formulaire pour trouver à quel client emprunte le livre
+        // formulaire stocké dans une variable Form
+        $form=$this->createFormBuilder($borrow)
+        // on ajoute un evariable client de type Entity Type
+        ->add('Clients', EntityType::class, [
+            'label'=>'Emprunteur',
+            // la class recuperée dans la class Client
+            'class'=>Clients::class,
+            'attr'=>['class'=>'form-control my-5'],
+            // choice label est tres important, on defini quelle propriete de la class client (la propriete firstName)
+            'choice_label'=>'lastName'
+        ])
+        // ajout d'un bouton avec la mise en forme SubmitType
+        ->add('save', SubmitType::class, [
+            'label'=>'Valider',
+            'attr'=>['class'=>'btn-primary']
+            
+        ])
+        ->getForm();
+            // le $request va contenir les POST les GET les Files
+        $form->handleRequest($request);
+
+        // soumission du formulaire verification
+        if ($form->isSubmitted()&&$form->isValid()) {
+            // recupere les données du formulaire
+            $update = $form->getData();
+
+            // on instencie l'emprunt à 1 (s'il y' a un livre de disponible)
+            $book->setAivalable(1);
+
+            //on recupere du formulaire le client choisi et on le met dans l'emprunt
+            //grace au setter
+            $borrow->setClients($update->getClients());
+
+            // on envoi dans la bdd
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($borrow);
+            $entityManager->flush();
+
+            // et on redirige vers le listing Book
+            return $this->redirectToRoute('book_listing');
+        }
+
+        return $this->renderForm('book/borrow.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+
     
 }
 

@@ -34,7 +34,7 @@
 				<th>{{"release_date"|trans}}</th>
 				<th>{{"Category"|trans}}</th>
 				<th>{{"forChild"|trans}}</th>
-				<th>{{"isTaken"|trans}}</th>
+				<th>{{"Available"|trans}}</th>
 				<th>{{"Client"|trans}}</th>
 				<th></th>
 				<th></th>
@@ -48,12 +48,45 @@
 						<td>{{book.getSummary()}}</td>
 						<td>{{book.getReleaseDate()|date("d-M-Y", "Europe/Paris")}}</td>
 						<td>{{book.getCategory()}}</td>
-						<td>{{book.getClientId()}}</td>
-						<td></td>
-						<td></td>
 						<td>
-							<a class="btn btn-primary" href="./borrow/{{book.getId()}}">{{'Borrow'|trans}}</a>
+							{%if book.getForChild() %}
+								Oui
+							{% else %}
+								Non
+							{% endif %}
 						</td>
+						<td>
+							{%if book.getAivalable() %}
+								Oui
+							{% else %}
+								Non
+							{% endif %}
+						</td>
+
+						<td>
+							{# {{book.getClientId()}} #}
+							{# {% if borrow.getClients() %}
+																																																																																																							{{book.borrow.getClient().getFirstName}}
+																																																																																																						{% endif %} #}
+							{# {% for client in clients %} #}
+
+								{% if book.getAivalable() %}
+									{% for borrow in book.getBorrows() %}
+								{{borrow.getClients().getFirstName()}}
+								{% endfor %}
+							{% else %}
+								Aucun
+							{% endif %}
+						</td>
+						<td>
+							{%if book.getAivalable() %}
+								<button type="button" class="btn btn-primary" disabled>{{'Borrow'}}</button>
+							{% else %}
+								<a class="btn btn-primary" href="./borrow/{{book.getId()}}">{{'Borrow'|trans}}</a>
+							{% endif %}
+						</td>
+
+
 						<td>
 
 							<a class="btn btn-success" href="./edit/{{book.getId()}}">{{'Edit'|trans}}</a>

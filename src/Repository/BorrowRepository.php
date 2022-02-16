@@ -47,4 +47,17 @@ class BorrowRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // public function getBorrow($id): Array
+    // {
+    //     $qb = $this->createQueryBuilder('b')
+    //         ->andWhere('b.Books = :id')
+    //         ->andWhere('b.Date_rendered = :val')
+    //         ->setParameter('id', $id)
+    //         ->setParameter('val', null);
+          
+    //         $query = $qb->getQuery();
+    //         return $query->execute();
+    //     ;
+    // }
 }

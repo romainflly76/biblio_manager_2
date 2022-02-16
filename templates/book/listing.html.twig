@@ -35,7 +35,7 @@
 				<th>{{"Category"|trans}}</th>
 				<th>{{"forChild"|trans}}</th>
 				<th>{{"Available"|trans}}</th>
-				<th>{{"Client"|trans}}</th>
+				{# <th>{{"Client"|trans}}</th> #}
 				<th></th>
 				<th></th>
 				<th></th>
@@ -57,30 +57,24 @@
 						</td>
 						<td>
 							{%if book.getAivalable() %}
-								Oui
-							{% else %}
 								Non
-							{% endif %}
-						</td>
-
-						<td>
-							{# {{book.getClientId()}} #}
-							{# {% if borrow.getClients() %}
-																																																																																																							{{book.borrow.getClient().getFirstName}}
-																																																																																																						{% endif %} #}
-							{# {% for client in clients %} #}
-
-								{% if book.getAivalable() %}
-									{% for borrow in book.getBorrows() %}
-								{{borrow.getClients().getFirstName()}}
-								{% endfor %}
 							{% else %}
-								Aucun
+								Oui
 							{% endif %}
 						</td>
+
+						{# <td>
+																						{% if book.getAivalable() %}
+																							{% for borrow in book.getBorrows() %}
+																								{{borrow.getClients().getFirstName()}}
+																							{% endfor %}
+																						{% else %}
+																							Aucun
+																						{% endif %}
+																					</td> #}
 						<td>
 							{%if book.getAivalable() %}
-								<button type="button" class="btn btn-primary" disabled>{{'Borrow'}}</button>
+								<a type="button" class="btn btn-primary" href="{{ path('render_book', {'id': book.getId()} )}}">{{'Return'}}</a>
 							{% else %}
 								<a class="btn btn-primary" href="./borrow/{{book.getId()}}">{{'Borrow'|trans}}</a>
 							{% endif %}
@@ -93,14 +87,16 @@
 						</td>
 						<td>
 							<a class="btn btn-danger" href="./delete/{{book.getId()}}">{{'Delete'|trans}}</a>
+
 						</td>
 					</tr>
+
 				{% endfor %}
 			</tbody>
+
+
 		</table>
-
 	</div>
-
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>

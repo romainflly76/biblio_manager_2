@@ -6,6 +6,7 @@ use App\Entity\Books;
 use App\Entity\Borrow;
 use App\Form\BookType;
 use App\Entity\Clients;
+use App\Repository\BorrowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BookController extends AbstractController
 {
+    private $borrowRepository;
+
+    public function __construct(BorrowRepository $borrowRepository)
+    {
+        $this->borrowRepository = $borrowRepository;
+    }
     
     #[Route('/book', name: 'book')]
     public function index(ManagerRegistry $doctrine): Response
@@ -85,6 +92,9 @@ class BookController extends AbstractController
             return $this->redirectToRoute('book_listing');
         }
 
+        // Ajout du bandeau affichage succes
+        $this->addFlash('success', 'livre créé! Sans probleme!');
+
         return $this->renderForm('book/create.html.twig', [
             'form' => $form,
         ]);
@@ -147,7 +157,7 @@ class BookController extends AbstractController
         $entityManager->flush();
 
            // Ajout du bandeau affichage succes
-           $this->addFlash('success', 'book suprimé! Sans probleme!');
+           $this->addFlash('success', 'livre suprimé! Sans probleme!');
 
            return $this->redirectToRoute('book_listing');
           
@@ -177,7 +187,7 @@ class BookController extends AbstractController
             'class'=>Clients::class,
             'attr'=>['class'=>'form-control my-5'],
             // choice label est tres important, on defini quelle propriete de la class client (la propriete firstName)
-            'choice_label'=>'lastName'
+            'choice_label'=>'firstName'
         ])
         // ajout d'un bouton avec la mise en forme SubmitType
         ->add('save', SubmitType::class, [
@@ -205,6 +215,7 @@ class BookController extends AbstractController
             $entityManager = $doctrine->getManager();
             $entityManager->persist($borrow);
             $entityManager->flush();
+            
 
             // et on redirige vers le listing Book
             return $this->redirectToRoute('book_listing');
@@ -215,7 +226,34 @@ class BookController extends AbstractController
         ]);
     }
 
+// Return
+ /**
+     * @Route("/book/return/{id}", name="render_book")
+     */
+                                                                                // il faut le parametre Borrow Repository si on fait une requete DQL (ici pas de besoin)
+    public function return(Request $request, ManagerRegistry $doctrine, int $id, BorrowRepository $borrowRepository): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $book = $entityManager->getRepository(Books::class)->find($id);
 
+        // on intencie une variable borrow pour recuperer dans la classe Borrow l'id de Books (bdd: books_id) et la date de rendu (bdd: date_rendered)
+        $borrow = $entityManager->getRepository(Borrow::class)->findOneBy(["Books"=>$id, "Date_rendered"=>null]);
+        
+        // dd($borrow);
+        $borrow->setDateRendered(new \DateTime('now'));
+    
+        // dd($borrow);
+        $book->setAivalable(0);
+        
+        
+        $entityManager->flush();
+
+
+           // Ajout du bandeau affichage succes
+           $this->addFlash('success', 'livre retourné! Sans probleme!');
+
+           return $this->redirectToRoute('book_listing');
     
 }
 
+}

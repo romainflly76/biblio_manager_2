@@ -79,20 +79,20 @@ class Books
      */
     private $clientId;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Clients", inversedBy="books")
-     * @ORM\JoinTable(name="books_clients",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="books_id", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="clients_id", referencedColumnName="id")
-     *   }
-     * )
-     */
-    private $clients;
+    // /**
+    //  * @var \Doctrine\Common\Collections\Collection
+    //  *
+    //  * @ORM\ManyToMany(targetEntity="Clients", inversedBy="books")
+    //  * @ORM\JoinTable(name="books_clients",
+    //  *   joinColumns={
+    //  *     @ORM\JoinColumn(name="books_id", referencedColumnName="id")
+    //  *   },
+    //  *   inverseJoinColumns={
+    //  *     @ORM\JoinColumn(name="clients_id", referencedColumnName="id")
+    //  *   }
+    //  * )
+    //  */
+    // private $clients;
 
     /**
      * @ORM\OneToMany(targetEntity=Borrow::class, mappedBy="Books")

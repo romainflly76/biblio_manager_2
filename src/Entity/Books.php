@@ -100,6 +100,11 @@ class Books
     private $borrows;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $DeleteTime;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -259,6 +264,18 @@ class Books
     public function removeClient(Clients $client): self
     {
         $this->clients->removeElement($client);
+
+        return $this;
+    }
+
+    public function getDeleteTime(): ?\DateTimeInterface
+    {
+        return $this->DeleteTime;
+    }
+
+    public function setDeleteTime(?\DateTimeInterface $DeleteTime): self
+    {
+        $this->DeleteTime = $DeleteTime;
 
         return $this;
     }

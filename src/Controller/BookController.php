@@ -156,8 +156,8 @@ class BookController extends AbstractController
         $entityManager->remove($book);
         $entityManager->flush();
 
-           // Ajout du bandeau affichage succes
-           $this->addFlash('success', 'livre suprimé! Sans probleme!');
+           // Ajout du bandeau affichage danger
+           $this->addFlash('danger', 'livre suprimé! Sans probleme!');
 
            return $this->redirectToRoute('book_listing');
           
@@ -216,6 +216,9 @@ class BookController extends AbstractController
             $entityManager->persist($borrow);
             $entityManager->flush();
             
+            // Ajout du bandeau affichage danger
+            $this->addFlash('succes', 'livre emprunté! Sans probleme!');
+
 
             // et on redirige vers le listing Book
             return $this->redirectToRoute('book_listing');

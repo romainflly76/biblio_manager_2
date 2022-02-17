@@ -73,6 +73,9 @@ class ClientController extends AbstractController
            $entityManager->flush();
 
           
+           // Ajout du bandeau affichage succes
+           $this->addFlash('success', 'client créer! Sans probleme!');
+
             // retour au listing
             return $this->redirectToRoute('client_listing');
         }
@@ -134,12 +137,12 @@ class ClientController extends AbstractController
         $entityManager = $doctrine->getManager();
         $client = $entityManager->getRepository(Clients::class)->find($id);
 
-        
+        // dd($client);
         $entityManager->remove($client);
         $entityManager->flush();
 
            // Ajout du bandeau affichage succes
-           $this->addFlash('success', 'client suprimé! Sans probleme!');
+           $this->addFlash('danger', 'client suprimé! Sans probleme!');
 
            return $this->redirectToRoute('client_listing');
           

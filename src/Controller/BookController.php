@@ -6,6 +6,7 @@ use App\Entity\Books;
 use App\Entity\Borrow;
 use App\Form\BookType;
 use App\Entity\Clients;
+use App\Repository\BooksRepository;
 use App\Repository\BorrowRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -43,10 +44,10 @@ class BookController extends AbstractController
     {
         //on creer une variable qui va chercher la classe Books
         // On requete l'entity au travers de la variable Books
-        $books = $entity->getRepository(Books::class)->findAll();
-
+        $books = $entity->getRepository(Books::class)->findByDeleteTime(null);
+        // `dd($books);`
         return $this->render('book/listing.html.twig', [
-            'controller_name' => 'BookController',
+            // 'controller_name' => 'BookController',
             'books' => $books
         ]);
     }
@@ -153,7 +154,11 @@ class BookController extends AbstractController
         $book = $entityManager->getRepository(Books::class)->find($id);
 
         
-        $entityManager->remove($book);
+        $book->setDeleteTime(new \DateTime('now'));
+        
+        
+        // $entityManager->remove($book);
+        $entityManager->persist($book);
         $entityManager->flush();
 
            // Ajout du bandeau affichage danger

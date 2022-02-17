@@ -9,18 +9,7 @@
 {% endblock %}
 
 {% block body %}
-	<style>
-		.example-wrapper {
-			margin: 1em auto;
-			max-width: 70vw;
-			width: 95%;
-			font: 18px / 1.5 sans-serif;
-		}
-		.example-wrapper code {
-			background: #F5F5F5;
-			padding: 2px 6px;
-		}
-	</style>
+
 
 	<div class="example-wrapper">
 		<h2>{{'Book'|trans}}</h2>
@@ -64,14 +53,14 @@
 						</td>
 
 						{# <td>
-																						{% if book.getAivalable() %}
-																							{% for borrow in book.getBorrows() %}
-																								{{borrow.getClients().getFirstName()}}
-																							{% endfor %}
-																						{% else %}
-																							Aucun
-																						{% endif %}
-																					</td> #}
+																												{% if book.getAivalable() %}
+																													{% for borrow in book.getBorrows() %}
+																														{{borrow.getClients().getFirstName()}}
+																													{% endfor %}
+																												{% else %}
+																													Aucun
+																												{% endif %}
+																											</td> #}
 						<td>
 							{%if book.getAivalable() %}
 								<a type="button" class="btn btn-primary" href="{{ path('render_book', {'id': book.getId()} )}}">{{'Return'}}</a>

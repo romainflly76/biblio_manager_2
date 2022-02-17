@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Borrow;
+use App\Entity\Clients;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Books
@@ -102,7 +104,7 @@ class Books
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $DeleteTime;
+    private $deleteTime;
 
     /**
      * Constructor
@@ -270,12 +272,12 @@ class Books
 
     public function getDeleteTime(): ?\DateTimeInterface
     {
-        return $this->DeleteTime;
+        return $this->deleteTime;
     }
 
-    public function setDeleteTime(?\DateTimeInterface $DeleteTime): self
+    public function setDeleteTime(?\DateTimeInterface $deleteTime): self
     {
-        $this->DeleteTime = $DeleteTime;
+        $this->deleteTime = $deleteTime;
 
         return $this;
     }

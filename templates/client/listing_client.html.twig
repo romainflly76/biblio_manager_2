@@ -4,6 +4,7 @@
 	{{"client list"|trans}}
 {% endblock %}
 {% block stylesheets %}
+	{{parent()}}
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css"/>
 
 {% endblock %}
@@ -15,39 +16,41 @@
 		<h2>{{'Clients'|trans}}</h2>
 		<a class="btn btn-primary my-5" href="./create">{{'Create Client'|trans}}</a>
 
-		<table id="myTable" class="display">
-			<thead>
-				<th>{{"firstName"|trans}}</th>
-				<th>{{"lastName"|trans}}</th>
-				<th>{{"birth_date"|trans}}</th>
-				<th>{{"adress"|trans}}</th>
-				<th>{{"city"|trans}}</th>
-				<th>{{"email"|trans}}</th>
-				<th>{{"phoneNumber"|trans}}</th>
+		<div class="d-flex flex-wrap justify-content-center col-8 mx-auto">
+			<table id="myTable" class="display">
+				<thead>
+					<th>{{"firstName"|trans}}</th>
+					<th>{{"lastName"|trans}}</th>
+					<th>{{"birth_date"|trans}}</th>
+					<th>{{"adress"|trans}}</th>
+					<th>{{"city"|trans}}</th>
+					<th>{{"email"|trans}}</th>
+					<th>{{"phoneNumber"|trans}}</th>
 
-			</thead>
-			<tbody>
-				{% for client in clients %}
-					<tr>
-						<td>{{client.getFirstName()}}</td>
-						<td>{{client.getLastName()}}</td>
-						<td>{{client.getBirthDate()|date("d-M-Y", "Europe/Paris")}}</td>
-						<td>{{client.getAdress()}}</td>
-						<td>{{client.getCity()}}</td>
-						<td>{{client.getMail()}}</td>
-						<td>{{client.getPhone()}}</td>
+				</thead>
+				<tbody>
+					{% for client in clients %}
+						<tr>
+							<td>{{client.getFirstName()}}</td>
+							<td>{{client.getLastName()}}</td>
+							<td>{{client.getBirthDate()|date("d-M-Y", "Europe/Paris")}}</td>
+							<td>{{client.getAdress()}}</td>
+							<td>{{client.getCity()}}</td>
+							<td>{{client.getMail()}}</td>
+							<td>{{client.getPhone()}}</td>
 
-						<td>
+							<td>
 
-							<a class="btn btn-success" href="./edit/{{client.getId()}}">{{'Edit'|trans}}</a>
-						</td>
-						<td>
-							<a class="btn btn-danger" href="./delete/{{client.getId()}}">{{'Delete'|trans}}</a>
-						</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+								<a class="btn btn-success" href="./edit/{{client.getId()}}">{{'Edit'|trans}}</a>
+							</td>
+							<td>
+								<a class="btn btn-danger" href="./delete/{{client.getId()}}">{{'Delete'|trans}}</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
 
 	</div>
 

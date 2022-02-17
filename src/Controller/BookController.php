@@ -94,7 +94,7 @@ class BookController extends AbstractController
         }
 
         // Ajout du bandeau affichage succes
-        $this->addFlash('success', 'livre créé! Sans probleme!');
+        $this->addFlash('success', 'livre créé avec succés!');
 
         return $this->renderForm('book/create.html.twig', [
             'form' => $form,
@@ -131,7 +131,7 @@ class BookController extends AbstractController
            $entityManager->flush();
 
            // Ajout du bandeau affichage succes
-           $this->addFlash('success', 'Tâche modifiée! Sans probleme!');
+           $this->addFlash('success', 'Livre modidié');
 
            return $this->redirectToRoute('book_listing');
           
@@ -162,7 +162,7 @@ class BookController extends AbstractController
         $entityManager->flush();
 
            // Ajout du bandeau affichage danger
-           $this->addFlash('danger', 'livre suprimé! Sans probleme!');
+           $this->addFlash('danger', 'livre suprimé!');
 
            return $this->redirectToRoute('book_listing');
           
@@ -222,7 +222,7 @@ class BookController extends AbstractController
             $entityManager->flush();
             
             // Ajout du bandeau affichage danger
-            $this->addFlash('succes', 'livre emprunté! Sans probleme!');
+            $this->addFlash('succes', 'livre emprunté!');
 
 
             // et on redirige vers le listing Book
@@ -258,7 +258,7 @@ class BookController extends AbstractController
 
 
            // Ajout du bandeau affichage succes
-           $this->addFlash('success', 'livre retourné! Sans probleme!');
+           $this->addFlash('success', 'livre retourné Sans probleme!');
 
            return $this->redirectToRoute('book_listing');
     

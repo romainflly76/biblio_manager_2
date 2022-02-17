@@ -4,6 +4,7 @@
 	{{"Book list"|trans}}
 {% endblock %}
 {% block stylesheets %}
+	{{parent()}}
 	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css"/>
 
 {% endblock %}
@@ -15,76 +16,78 @@
 		<h2>{{'Book'|trans}}</h2>
 		<a class="btn btn-primary my-5" href="./create">{{'Create Book'|trans}}</a>
 
-		<table id="myTable" class="display">
-			<thead>
-				<th>{{"Title"|trans}}</th>
-				<th>{{"Author"|trans}}</th>
-				<th>{{"Summary"|trans}}</th>
-				<th>{{"release_date"|trans}}</th>
-				<th>{{"Category"|trans}}</th>
-				<th>{{"forChild"|trans}}</th>
-				<th>{{"Available"|trans}}</th>
-				{# <th>{{"Client"|trans}}</th> #}
-				<th></th>
-				<th></th>
-				<th></th>
-			</thead>
-			<tbody>
-				{% for book in books %}
-					<tr>
-						<td>{{book.getTitle()}}</td>
-						<td>{{book.getAuthor()}}</td>
-						<td>{{book.getSummary()}}</td>
-						<td>{{book.getReleaseDate()|date("d-M-Y", "Europe/Paris")}}</td>
-						<td>{{book.getCategory()}}</td>
-						<td>
-							{%if book.getForChild() %}
-								Oui
-							{% else %}
-								Non
-							{% endif %}
-						</td>
-						<td>
-							{%if book.getAivalable() %}
-								Non
-							{% else %}
-								Oui
-							{% endif %}
-						</td>
+		<div class="d-flex flex-wrap justify-content-center col-8 mx-auto">
+			<table id="myTable" class="display">
+				<thead>
+					<th>{{"Title"|trans}}</th>
+					<th>{{"Author"|trans}}</th>
+					<th>{{"Summary"|trans}}</th>
+					<th>{{"release_date"|trans}}</th>
+					<th>{{"Category"|trans}}</th>
+					<th>{{"forChild"|trans}}</th>
+					<th>{{"Available"|trans}}</th>
+					{# <th>{{"Client"|trans}}</th> #}
+					<th></th>
+					<th></th>
+					<th></th>
+				</thead>
+				<tbody>
+					{% for book in books %}
+						<tr>
+							<td>{{book.getTitle()}}</td>
+							<td>{{book.getAuthor()}}</td>
+							<td>{{book.getSummary()}}</td>
+							<td>{{book.getReleaseDate()|date("d-M-Y", "Europe/Paris")}}</td>
+							<td>{{book.getCategory()}}</td>
+							<td>
+								{%if book.getForChild() %}
+									Oui
+								{% else %}
+									Non
+								{% endif %}
+							</td>
+							<td>
+								{%if book.getAivalable() %}
+									Non
+								{% else %}
+									Oui
+								{% endif %}
+							</td>
 
-						{# <td>
-																												{% if book.getAivalable() %}
-																													{% for borrow in book.getBorrows() %}
-																														{{borrow.getClients().getFirstName()}}
-																													{% endfor %}
-																												{% else %}
-																													Aucun
-																												{% endif %}
-																											</td> #}
-						<td>
-							{%if book.getAivalable() %}
-								<a type="button" class="btn btn-primary" href="{{ path('render_book', {'id': book.getId()} )}}">{{'Return'}}</a>
-							{% else %}
-								<a class="btn btn-primary" href="./borrow/{{book.getId()}}">{{'Borrow'|trans}}</a>
-							{% endif %}
-						</td>
-
-
-						<td>
-
-							<a class="btn btn-success" href="./edit/{{book.getId()}}">{{'Edit'|trans}}</a>
-						</td>
-						<td>
-							<a class="btn btn-danger" href="./delete/{{book.getId()}}">{{'Delete'|trans}}</a>
-
-						</td>
-					</tr>
-
-				{% endfor %}
-			</tbody>
+							{# <td>
+																																																																																											{% if book.getAivalable() %}
+																																																																																												{% for borrow in book.getBorrows() %}
+																																																																																													{{borrow.getClients().getFirstName()}}
+																																																																																												{% endfor %}
+																																																																																											{% else %}
+																																																																																												Aucun
+																																																																																											{% endif %}
+																																																																																										</td> #}
+							<td>
+								{%if book.getAivalable() %}
+									<a type="button" class="btn btn-primary" href="{{ path('render_book', {'id': book.getId()} )}}">{{'Return'}}</a>
+								{% else %}
+									<a class="btn btn-primary" href="./borrow/{{book.getId()}}">{{'Borrow'|trans}}</a>
+								{% endif %}
+							</td>
 
 
-		</table>
+							<td>
+
+								<a class="btn btn-success" href="./edit/{{book.getId()}}">{{'Edit'|trans}}</a>
+							</td>
+							<td>
+								<a class="btn btn-danger" href="./delete/{{book.getId()}}">{{'Delete'|trans}}</a>
+
+							</td>
+						</tr>
+
+					{% endfor %}
+				</tbody>
+
+
+			</table>
+		</div>
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>

@@ -27,7 +27,7 @@ class ClientController extends AbstractController
     {
         //on creer une variable qui va chercher la classe Clients
         // On requete l'entity au travers de la variable clients
-        $clients = $entity->getRepository(Clients::class)->findAll();
+        $clients = $entity->getRepository(Clients::class)->findByDeleteClient(null);
 
         return $this->render('client/listing_client.html.twig', [
             'controller_name' => 'ClientController',
@@ -74,7 +74,7 @@ class ClientController extends AbstractController
 
           
            // Ajout du bandeau affichage succes
-           $this->addFlash('success', 'client créer! Sans probleme!');
+           $this->addFlash('success', 'Création du client');
 
             // retour au listing
             return $this->redirectToRoute('client_listing');
@@ -115,7 +115,7 @@ class ClientController extends AbstractController
            $entityManager->flush();
 
            // Ajout du bandeau affichage succes
-           $this->addFlash('success', 'client modifié! Sans probleme!');
+           $this->addFlash('success', 'client modifié, Sans probleme!');
 
            return $this->redirectToRoute('client_listing');
           
@@ -137,12 +137,15 @@ class ClientController extends AbstractController
         $entityManager = $doctrine->getManager();
         $client = $entityManager->getRepository(Clients::class)->find($id);
 
+        $client->setDeleteClient(new \DateTime('now'));
+
         // dd($client);
         $entityManager->remove($client);
+        $entityManager->persist($client);
         $entityManager->flush();
 
            // Ajout du bandeau affichage succes
-           $this->addFlash('danger', 'client suprimé! Sans probleme!');
+           $this->addFlash('danger', 'client suprimé!');
 
            return $this->redirectToRoute('client_listing');
           

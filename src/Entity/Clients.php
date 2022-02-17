@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Books;
+use App\Entity\Borrow;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Clients
@@ -83,6 +85,11 @@ class Clients
      * @ORM\OneToMany(targetEntity=Borrow::class, mappedBy="Clients")
      */
     private $borrows;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deleteClient;
 
     /**
      * Constructor
@@ -235,6 +242,18 @@ class Clients
         if ($this->books->removeElement($book)) {
             $book->removeClient($this);
         }
+
+        return $this;
+    }
+
+    public function getDeleteClient(): ?\DateTimeInterface
+    {
+        return $this->deleteClient;
+    }
+
+    public function setDeleteClient(?\DateTimeInterface $deleteClient): self
+    {
+        $this->deleteClient = $deleteClient;
 
         return $this;
     }

@@ -210,7 +210,7 @@ class BookController extends AbstractController
             $update = $form->getData();
 
             // on instencie l'emprunt à 1 (s'il y' a un livre de disponible)
-            $book->setAivalable(1);
+            $book->setAivalable(Books::EMPRUNTE);
 
             //on recupere du formulaire le client choisi et on le met dans l'emprunt
             //grace au setter
@@ -251,7 +251,7 @@ class BookController extends AbstractController
         $borrow->setDateRendered(new \DateTime('now'));
     
         // dd($borrow);
-        $book->setAivalable(0);
+        $book->setAivalable(Books::DISPONIBLE);
         
         
         $entityManager->flush();

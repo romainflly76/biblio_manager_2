@@ -106,6 +106,11 @@ class Books
      */
     private $deleteTime;
 
+
+    public const DISPONIBLE = 0;
+    public const EMPRUNTE = 1;
+
+
     /**
      * Constructor
      */

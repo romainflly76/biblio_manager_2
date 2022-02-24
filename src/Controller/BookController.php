@@ -175,34 +175,41 @@ class BookController extends AbstractController
         $entityManager = $doctrine->getManager();
                                                                     // l'id vient de l'url
         $book = $entityManager->getRepository(Books::class)->findOneBy(['id'=>$id]);
-        // nouvel emprunt on defini une date et une date max
-        $borrow = new Borrow;
-            $borrow->setDateLoan(new \DateTime('now'));
-            $borrow->setDateRendredMax(new \DateTime('+15 days'));
-            // on lie ce livre trouvé dans la base de donnée qu'on lie à l'emprunt
-            $borrow->setBooks($book);
-        
-        // on doit faire un formulaire pour trouver à quel client emprunte le livre
-        // formulaire stocké dans une variable Form
-        $form=$this->createFormBuilder($borrow)
-        // on ajoute un evariable client de type Entity Type
-        ->add('Clients', EntityType::class, [
-            'label'=>'Emprunteur',
-            // la class recuperée dans la class Client
-            'class'=>Clients::class,
-            'attr'=>['class'=>'form-control my-5'],
-            // choice label est tres important, on defini quelle propriete de la class client (la propriete firstName)
-            'choice_label'=>'firstName'
-        ])
-        // ajout d'un bouton avec la mise en forme SubmitType
-        ->add('save', SubmitType::class, [
-            'label'=>'Valider',
-            'attr'=>['class'=>'btn-primary']
+        // dd(book.getAivalable());
+
+        // condition if pour savoir si le livre est dejà emprunté ou non 
+        // s'il n'est pas (1 ou 0  true ou False)
+        if (!$book->getAivalable()) {
             
-        ])
-        ->getForm();
-            // le $request va contenir les POST les GET les Files
-        $form->handleRequest($request);
+
+            // nouvel emprunt on defini une date et une date max
+                $borrow = new Borrow;
+                $borrow->setDateLoan(new \DateTime('now'));
+                $borrow->setDateRendredMax(new \DateTime('+15 days'));
+                // on lie ce livre trouvé dans la base de donnée qu'on lie à l'emprunt
+                $borrow->setBooks($book);
+            
+            // on doit faire un formulaire pour trouver à quel client emprunte le livre
+            // formulaire stocké dans une variable Form
+                $form=$this->createFormBuilder($borrow)
+            // on ajoute un evariable client de type Entity Type
+            ->add('Clients', EntityType::class, [
+                'label'=>'Emprunteur',
+                // la class recuperée dans la class Client
+                'class'=>Clients::class,
+                'attr'=>['class'=>'form-control my-5'],
+                // choice label est tres important, on defini quelle propriete de la class client (la propriete firstName)
+                'choice_label'=>'firstName'
+            ])
+            // ajout d'un bouton avec la mise en forme SubmitType
+            ->add('save', SubmitType::class, [
+                'label'=>'Valider',
+                'attr'=>['class'=>'btn-primary']
+                
+            ])
+            ->getForm();
+                // le $request va contenir les POST les GET les Files
+            $form->handleRequest($request);
 
         // soumission du formulaire verification
         if ($form->isSubmitted()&&$form->isValid()) {
@@ -228,10 +235,18 @@ class BookController extends AbstractController
             // et on redirige vers le listing Book
             return $this->redirectToRoute('book_listing');
         }
+    }
+    // Else de redirection vers le Book Listing avec affichage 
+    else {
+        $this->addFlash('danger', 'livre dejà emprunté!');
+        return $this->redirectToRoute('book_listing');
+    }
+        
 
         return $this->renderForm('book/borrow.html.twig', [
             'form' => $form,
         ]);
+    
     }
 
 // Return

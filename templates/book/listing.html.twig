@@ -55,14 +55,14 @@
 							</td>
 
 							{# <td>
-																																																																																											{% if book.getAivalable() %}
-																																																																																												{% for borrow in book.getBorrows() %}
-																																																																																													{{borrow.getClients().getFirstName()}}
-																																																																																												{% endfor %}
-																																																																																											{% else %}
-																																																																																												Aucun
-																																																																																											{% endif %}
-																																																																																										</td> #}
+																																																																																																		{% if book.getAivalable() %}
+																																																																																																			{% for borrow in book.getBorrows() %}
+																																																																																																				{{borrow.getClients().getFirstName()}}
+																																																																																																			{% endfor %}
+																																																																																																		{% else %}
+																																																																																																			Aucun
+																																																																																																		{% endif %}
+																																																																																																	</td> #}
 							<td>
 								{%if book.getAivalable() %}
 									<a type="button" class="btn btn-primary" href="{{ path('render_book', {'id': book.getId()} )}}">{{'Return'}}</a>
